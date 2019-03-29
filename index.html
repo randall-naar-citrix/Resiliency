@@ -1,3 +1,4 @@
+<!-- RISK : NO INTERNET -->
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -10,7 +11,7 @@
 			html{
 				width: 100%;
 				height: 100%;
-				font-family: "citrixsans-light", sans-serif;
+				font-family: "citrixsans-light", sans-serif; /* RISK : No backup styles */
 				color: black;
 			}
 			body{
@@ -28,7 +29,7 @@
 			}
 			h1{
 				font-size: 30px;
-				font-weight: 900;
+				font-weight: 100;
 			}
 			.container{
 				display: flex;
@@ -40,80 +41,6 @@
 				align-items: center;
 				margin-top: 40px;
 			}
-			.database-information{
-				width: 80%;
-				height: 100%;
-				display: flex;
-				flex-direction: column;
-				flex: 1;
-			}
-			.fetch-button{
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				height: 50px;
-				width: 130px;
-				background-color: #309ddc;
-				cursor: pointer;
-				margin-top: 50px;
-			}
-			.fetch-button p{
-				color: white;
-				font-size: larger;
-			}
-			.fetch-button:hover{
-				background-color: #147eb9;
-			}
-			.table{
-				min-width: 300px;
-				width: 100%;
-				height: 300px;
-				overflow-y: scroll;
-			}
-			.table-row-header, .table-row{
-				display: flex;
-				flex-direction: row;
-				height: 100px;
-			}
-			.table-row{
-				font-size: 16px;
-				align-items: center;
-			}
-			.table-row:nth-child(2n) {
-				background-color: #f0f0f0;
-			}
-			.table-row-input{
-				font-size: 16px;
-				display: flex;
-				align-items: center;
-				flex: 1;
-			}
-			.table-row-header{
-				font-size: 25px;
-				font-weight: 700;
-				align-items: center;
-			}
-			.table-row-entry{
-				flex: 1;
-			}
-			.hr{
-				width: 100%;
-				height: 1px;
-				background-color: #f0f0f0;
-			}
-			input{
-				border: none;
-				font-size: 16px;
-				font-weight: bold;
-				height: 60px;
-				width: 0px; /*Handled by flex*/
-			}
-			input:focus {
-			    outline-width: 0;
-			}
-			input::placeholder{
-				color: lightgray;
-			}
 			#loader{
 				display: none;
 			}
@@ -124,7 +51,7 @@
 			<img src="https://www.citrix.com/content/dam/citrix61/en_us/images/logos/citrix/citrix-logo-black.png" class="logo-img">
 		</nav>
 		<div class="container">
-			<div class="database-information">
+			<div>
 				<h1>Citrix Lab Projects:</h1>
 				<ul id="lab-list">
 					<img id="loader" src="https://lab-test-fiu.azurewebsites.net/api/HttpTrigger2?code=Cdi2QAaELNw0mNZYmyCVGf/N7xY/BxyeuUZD4OTpn/MRL9niKk/WMw==&loader=25.gif" >
@@ -134,34 +61,7 @@
 		</div>
 		<script>
 			var labData = "https://lab-test-fiu.azurewebsites.net/api/Lab-Data-API?code=alFOayDi7Fd1oDr5fJVxLp/gCMCmBORNUeLStVXb5xllRfP5OgrEQw==";
-			function getAndResetInputValue(id){
-				var el = document.getElementById(id);
-				var val = el.value;
-				el.value = "";
-				return val;
-			}
-			//try and forge origin on req
-			function saveRow(){
-				var body = {
-					"first_name": getAndResetInputValue("first-name"),
-					"last_name": getAndResetInputValue("last-name"),
-					"student_id": getAndResetInputValue("student-id")
-				};
-				fetch(studentDataEndpoint, {
-					"method": "POST",
-					"headers": {
-						"Content-Type": "application/json",
-						"Accept": "application/json"
-					},
-					"body": JSON.stringify(body)
-				})
-				.then((res) => res.json(), (err) => {
-					throw "Could not parse JSON";
-				})
-				.then((res) => {
-					getStudents();
-				});
-			}
+
 			function getLabs(){
 				var loader = document.getElementById("loader");
 				loader.style.display = "block";
@@ -174,6 +74,7 @@
 					throw "Could not parse JSON";
 				})
 				.then((res) => {
+					//RISK : If the data isn't in JSON format (try-catch)
 					var labs = JSON.parse(res);
 					var labList = document.getElementById("lab-list");
 					labList.innerHTML = "";
